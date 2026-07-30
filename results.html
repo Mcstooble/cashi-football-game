@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>النتائج | كاشي</title>
+<meta name="description" content="نتائج لعبة التوقّعات: الهلال أم درمان ورايون سبورت.">
+
+<style>
+:root{
+  --purple:#4E2D82;
+  --purple-lit:#5F4BCF;
+  --yellow:#FFAE00;
+  --ivory:#FFFCF5;
+  --nile:#20C5D9;
+  --ink:#201003;
+  --r:22px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{
+  font-family:"Brother 1816","Avenir Next","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  background:var(--purple);color:#fff;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+
+.field{position:fixed;inset:0;z-index:0;overflow:hidden;
+  background:linear-gradient(160deg,var(--purple) 0%,var(--purple-lit) 100%)}
+.field i{position:absolute;left:50%;top:30%;border-radius:26%;
+  transform:translate(-50%,-50%) rotate(45deg);border:1px solid #fff}
+.field i:nth-child(1){width:52vmax;height:52vmax;opacity:.12}
+.field i:nth-child(2){width:68vmax;height:68vmax;opacity:.09}
+.field i:nth-child(3){width:88vmax;height:88vmax;opacity:.06}
+.field i:nth-child(4){width:112vmax;height:112vmax;opacity:.04}
+
+.wrap{position:relative;z-index:1;max-width:620px;margin:0 auto;
+  padding:max(18px,env(safe-area-inset-top)) 20px max(34px,env(safe-area-inset-bottom))}
+
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px}
+.logo .key{width:26px;height:26px;border-radius:30% 30% 30% 4%;background:var(--yellow);
+  transform:rotate(45deg);position:relative;flex-shrink:0}
+.logo .key::before,.logo .key::after{content:"";position:absolute;width:3.5px;height:3.5px;
+  border-radius:50%;background:var(--purple);top:34%}
+.logo .key::before{left:30%}.logo .key::after{left:52%}
+.langtog{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
+  color:#fff;font:inherit;font-weight:700;font-size:13px;padding:8px 14px;
+  border-radius:999px;cursor:pointer;letter-spacing:.04em}
+
+.kicker{font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--yellow);margin:34px 0 14px}
+h1{font-size:clamp(36px,11vw,58px);line-height:.96;font-weight:800;
+  letter-spacing:-.02em;margin-bottom:14px}
+h1 em{font-style:normal;color:var(--yellow)}
+.sub{font-size:clamp(15px,4.2vw,18px);line-height:1.5;opacity:.86;max-width:30em}
+
+/* the final score */
+.final{
+  background:var(--ivory);color:var(--purple);border-radius:var(--r);
+  padding:24px 22px;margin-top:28px;box-shadow:0 10px 0 rgba(0,0,0,.16);
+}
+.final .lbl{font-size:11px;font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase;opacity:.55;margin-bottom:14px}
+.final .row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}
+.final .tm{font-size:14px;font-weight:800;line-height:1.25;text-align:center}
+.final .sc{font-size:clamp(38px,12vw,52px);font-weight:800;line-height:1;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.final .mins{font-size:15px;font-weight:700;margin-top:18px;padding-top:16px;
+  border-top:1px solid rgba(78,45,130,.15);line-height:1.6}
+
+/* the board */
+.board{margin-top:30px;display:flex;flex-direction:column;gap:9px}
+
+.ent{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;
+  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.17);
+  border-radius:16px;padding:14px 15px;
+}
+.ent .pos{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;
+  opacity:.6;min-width:1.6em;text-align:center}
+.ent .who{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
+.ent .who small{display:block;font-size:13px;font-weight:600;opacity:.7;
+  margin-top:3px;font-variant-numeric:tabular-nums}
+.ent .tag{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  border-radius:999px;padding:5px 10px;white-space:nowrap}
+.tag.perfect{background:var(--yellow);color:var(--ink)}
+.tag.exact{background:#fff;color:var(--purple)}
+.tag.near{background:rgba(32,197,217,.28);color:#fff}
+.tag.no{background:rgba(255,255,255,.12);opacity:.65}
+
+/* the winner */
+.ent.king{
+  background:var(--ivory);color:var(--purple);border:0;
+  box-shadow:0 8px 0 rgba(0,0,0,.16);padding:20px 18px;
+}
+.ent.king .pos{opacity:1;color:var(--yellow);font-size:22px}
+.ent.king .who{font-size:20px}
+.ent.king .who small{opacity:.6}
+.crown{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--yellow);margin-bottom:12px;display:block}
+
+.note{font-size:13px;opacity:.65;margin-top:26px;line-height:1.6}
+.state{font-size:16px;opacity:.85;margin-top:30px;line-height:1.6}
+[hidden]{display:none}
+.ltr{direction:ltr;display:inline-block}
+</style>
+</head>
+<body>
+
+<div class="field" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<div class="wrap">
+  <div class="bar">
+    <div class="logo"><span class="key"></span><span>cashi</span></div>
+    <button class="langtog" id="lang" type="button">English</button>
+  </div>
+
+  <div class="kicker" data-t="kicker"></div>
+  <h1 data-t="h1"></h1>
+  <p class="sub" data-t="sub"></p>
+
+  <div id="loading" class="state" data-t="loading"></div>
+  <div id="waiting" class="state" hidden data-t="waiting"></div>
+  <div id="broken"  class="state" hidden data-t="broken"></div>
+
+  <div id="live" hidden>
+    <div class="final">
+      <div class="lbl" data-t="finallbl"></div>
+      <div class="row">
+        <div class="tm" data-t="home"></div>
+        <div class="sc" id="score">0 – 0</div>
+        <div class="tm" data-t="away"></div>
+      </div>
+      <div class="mins" id="goalmins"></div>
+    </div>
+
+    <span class="crown" id="crownlbl" hidden data-t="crown"></span>
+    <div class="board" id="board"></div>
+    <p class="note" data-t="note"></p>
+  </div>
+</div>
+
+<script>
+/* Same two values as index.html. Project Settings -> API in Supabase. */
+const SUPABASE_URL = "";
+const SUPABASE_ANON_KEY = "";
+
+const T = {
+  ar:{
+    dir:"rtl", other:"English",
+    home:"الهلال أم درمان", away:"رايون سبورت",
+    kicker:"كأس كاف للأندية",
+    h1:'منو <em>زبطها</em>؟',
+    sub:"دي التوقّعات مرتّبة من الأقرب للنتيجة الحقيقية.",
+    finallbl:"النتيجة النهائية",
+    crown:"ملك التوقّعات",
+    loading:"لحظة، بنجيب النتائج…",
+    waiting:"المباراة ما خلصت لسع. ارجع بعد صافرة النهاية ولقى النتائج هنا.",
+    broken:"ما قدرنا نجيب النتائج هسي. حاول تاني بعد شوية.",
+    note:"أرقام الحسابات مخفية للخصوصية. الفائزين بيتم التأكد منهم قبل الإعلان.",
+    perfect:"مضبوطة تماماً", exact:"النتيجة صح", near:"الفائز صح", no:"ما زبطها",
+    off:n=>`${n} دقيقة فرق`,
+    goalline:(m,who)=>`${m}د · ${who}`
+  },
+  en:{
+    dir:"ltr", other:"عربي",
+    home:"Al Hilal Omdurman", away:"Rayon Sports",
+    kicker:"CECAFA Club Cup",
+    h1:'So who <em>called</em> it?',
+    sub:"Every prediction, ranked from closest to the real result.",
+    finallbl:"Final score",
+    crown:"King of the Predictors",
+    loading:"Getting the results…",
+    waiting:"The match isn't finished yet. Come back after the final whistle and the results will be here.",
+    broken:"We couldn't load the results just now. Try again in a moment.",
+    note:"Account numbers are hidden for privacy. Winners are verified before we announce them.",
+    perfect:"Perfect call", exact:"Exact score", near:"Right winner", no:"Missed it",
+    off:n=>`${n} min off`,
+    goalline:(m,who)=>`${m}' · ${who}`
+  }
+};
+
+let lang = "ar";
+let data = null;      /* {info, rows} once loaded */
+
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+async function rpc(fn, body){
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) throw new Error("no-keys");
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "apikey":SUPABASE_ANON_KEY,
+      "Authorization":`Bearer ${SUPABASE_ANON_KEY}`
+    },
+    body:JSON.stringify(body || {})
+  });
+  if (!r.ok) throw new Error("rpc " + r.status);
+  const t = await r.text();
+  return t ? JSON.parse(t) : null;
+}
+
+function tag(r){
+  const t = T[lang];
+  if (r.perfect)        return `<span class="tag perfect">${t.perfect}</span>`;
+  if (r.score_exact)    return `<span class="tag exact">${t.exact}</span>`;
+  if (r.winner_correct) return `<span class="tag near">${t.near}</span>`;
+  return `<span class="tag no">${t.no}</span>`;
+}
+
+function paint(){
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir  = t.dir;
+  $("#lang").textContent = t.other;
+
+  $$("[data-t]").forEach(el=>{
+    const v = t[el.dataset.t];
+    if (typeof v === "string") el.innerHTML = v;
+  });
+
+  if (!data) return;
+
+  /* the final score, read off the top-ranked entry's comparison */
+  const rows = data.rows;
+  $("#score").textContent = data.score;
+  $("#goalmins").innerHTML = data.mins.length
+    ? data.mins.map(([m,side]) => t.goalline(m, side === "home" ? t.home : t.away)).join("<br>")
+    : "";
+
+  $("#crownlbl").hidden = !rows.length;
+  $("#board").innerHTML = rows.map((r,i)=>`
+    <div class="ent ${i===0?"king":""}">
+      <div class="pos">${r.rank}</div>
+      <div class="who"><span class="ltr">${esc(r.masked_account)}</span>
+        <small><span class="ltr">${esc(r.prediction)}</span> · ${t.off(r.minutes_off)}</small></div>
+      <div>${tag(r)}</div>
+    </div>`).join("");
+}
+
+$("#lang").onclick = ()=>{ lang = lang === "ar" ? "en" : "ar"; paint(); };
+
+(async function load(){
+  paint();
+  try{
+    const info = (await rpc("get_match_info"))?.[0];
+
+    if (!info || !info.results_published){
+      $("#loading").hidden = true;
+      $("#waiting").hidden = false;
+      return;
+    }
+
+    const rows = await rpc("get_results", { p_limit: 50 }) || [];
+
+    const score = `${info.home_score} – ${info.away_score}`;
+    const mins = [
+      ...(info.home_minutes || []).map(m => [m,"home"]),
+      ...(info.away_minutes || []).map(m => [m,"away"])
+    ].sort((a,b) => a[0] - b[0]);
+
+    data = { info, rows, score, mins };
+    $("#loading").hidden = true;
+    $("#live").hidden = false;
+    paint();
+
+  }catch(e){
+    $("#loading").hidden = true;
+    $("#broken").hidden = false;
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Enter the result | Cashi</title>
+
+<style>
+:root{
+  --purple:#4E2D82;
+  --purple-lit:#5F4BCF;
+  --yellow:#FFAE00;
+  --ivory:#FFFCF5;
+  --nile:#20C5D9;
+  --ink:#201003;
+  --line:rgba(78,45,130,.14);
+  --r:18px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{
+  font-family:"Brother 1816","Avenir Next","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  background:var(--ivory);color:var(--purple);
+  -webkit-font-smoothing:antialiased;
+  padding:max(20px,env(safe-area-inset-top)) 20px max(28px,env(safe-area-inset-bottom));
+}
+.page{max-width:820px;margin:0 auto}
+
+/* header */
+.bar{display:flex;align-items:center;gap:10px;padding-bottom:26px;border-bottom:1px solid var(--line)}
+.key{
+  width:24px;height:24px;border-radius:30% 30% 30% 4%;background:var(--yellow);
+  transform:rotate(45deg);position:relative;flex-shrink:0;
+}
+.key::before,.key::after{content:"";position:absolute;width:3px;height:3px;border-radius:50%;background:var(--purple);top:34%}
+.key::before{left:30%}.key::after{left:52%}
+.bar b{font-size:17px;font-weight:800}
+.bar .tag{
+  margin-left:auto;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  background:var(--purple);color:#fff;border-radius:999px;padding:5px 11px;
+}
+
+h1{font-size:clamp(28px,7vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:30px 0 8px}
+.lede{font-size:16px;line-height:1.5;opacity:.72;max-width:52ch}
+
+/* cards */
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r);
+  padding:22px;margin-top:24px;
+}
+.card h2{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.55;margin-bottom:18px}
+
+label{display:block;font-size:14px;font-weight:700;margin-bottom:7px}
+.help{font-size:13px;opacity:.65;margin-top:7px;line-height:1.45}
+
+input[type="text"],input[type="password"]{
+  width:100%;font:inherit;font-size:17px;font-weight:600;
+  background:var(--ivory);color:var(--purple);
+  border:1px solid var(--line);border-radius:13px;padding:14px 15px;
+  font-variant-numeric:tabular-nums;
+}
+input:focus-visible{outline:2px solid var(--purple-lit);outline-offset:2px}
+input::placeholder{color:rgba(78,45,130,.34);font-weight:500}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+.fld + .fld{margin-top:18px}
+
+/* derived score preview */
+.derived{
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  background:var(--purple);color:#fff;border-radius:14px;
+  padding:18px;margin-top:20px;
+}
+.derived .s{font-size:40px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.derived .t{font-size:12px;font-weight:700;opacity:.75;text-align:center;max-width:9em;line-height:1.3}
+
+button{
+  font:inherit;font-weight:800;cursor:pointer;border:0;border-radius:999px;
+}
+.primary{
+  width:100%;background:var(--yellow);color:var(--ink);
+  font-size:18px;padding:18px;margin-top:22px;
+  box-shadow:0 6px 0 rgba(0,0,0,.18);
+}
+.primary:active:not(:disabled){transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.18)}
+.primary:disabled{opacity:.45;cursor:default;box-shadow:0 6px 0 rgba(0,0,0,.08)}
+.ghost{
+  background:none;color:var(--purple);border:1px solid var(--line);
+  font-size:14px;padding:11px 18px;
+}
+
+.msg{border-radius:13px;padding:14px 16px;margin-top:18px;font-size:14px;font-weight:700;line-height:1.45}
+.msg.bad{background:#FDECEE;color:#A81D28}
+.msg.good{background:rgba(34,192,140,.14);color:#12775A}
+.msg[hidden]{display:none}
+
+/* results table */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:4px}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:660px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{
+  font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  opacity:.55;position:sticky;top:0;background:#fff;
+}
+td.num{font-variant-numeric:tabular-nums}
+tr.win{background:rgba(255,174,0,.12)}
+tr.win td:first-child{font-weight:800}
+.pill{
+  display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;
+  border-radius:999px;padding:3px 9px;text-transform:uppercase;
+}
+.pill.perfect{background:var(--yellow);color:var(--ink)}
+.pill.exact{background:var(--purple);color:#fff}
+.pill.near{background:rgba(32,197,217,.2);color:#0E5A66}
+.pill.no{background:rgba(78,45,130,.1);opacity:.7}
+
+.foot{margin-top:30px;font-size:13px;opacity:.6;line-height:1.55}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="bar">
+    <span class="key"></span><b>cashi</b>
+    <span class="tag">Internal</span>
+  </div>
+
+  <h1>Enter the result</h1>
+  <p class="lede">Al Hilal Omdurman vs Rayon Sports. Once you submit this, the public
+  results page goes live and every prediction is ranked against it.</p>
+
+  <!-- ============ ENTRY FORM ============ -->
+  <section id="form">
+    <div class="card">
+      <h2>Goal minutes</h2>
+
+      <div class="two">
+        <div class="fld">
+          <label for="hm">Al Hilal Omdurman</label>
+          <input id="hm" type="text" inputmode="numeric" placeholder="12, 67" autocomplete="off">
+        </div>
+        <div class="fld">
+          <label for="am">Rayon Sports</label>
+          <input id="am" type="text" inputmode="numeric" placeholder="34" autocomplete="off">
+        </div>
+      </div>
+
+      <p class="help">The minute each goal was scored, separated by commas. Leave a side
+      empty if they didn't score. Extra time counts, penalty shootouts don't.</p>
+
+      <div class="derived">
+        <div class="t">Al Hilal Omdurman</div>
+        <div class="s" id="prev">0 – 0</div>
+        <div class="t">Rayon Sports</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Confirm it's you</h2>
+      <div class="fld">
+        <label for="pw">Admin password</label>
+        <input id="pw" type="password" placeholder="••••••••••••" autocomplete="off">
+        <p class="help">Ask Josh if you don't have it.</p>
+      </div>
+    </div>
+
+    <button class="primary" id="go" type="button">Publish the result</button>
+    <div class="msg bad" id="err" hidden></div>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section id="out" class="hide">
+    <div class="msg good" id="ok"></div>
+
+    <div class="card">
+      <h2>Ranked predictions</h2>
+      <p class="help" style="margin:-8px 0 16px">Full account numbers, so you can check
+      them against live Cashi accounts before crowning anyone. Ordered by exact score,
+      then correct winner, then closest on the goal minutes.</p>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Account</th><th>Their call</th><th>Result</th>
+              <th>Mins off</th><th>Transaction ref</th><th>Social</th><th>Entered</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <button class="ghost" id="again" type="button" style="margin-top:20px">
+      Correct the result
+    </button>
+  </section>
+
+  <p class="foot">
+    This page has no access to anything except entering the result and reading the
+    ranked list. It can't change predictions, and it can't delete anything.
+  </p>
+</div>
+
+<script>
+/* Paste the same two values used in index.html.
+   Project Settings -> API in Supabase. */
+const SUPABASE_URL = "";
+const SUPABASE_ANON_KEY = "";
+
+const $ = s => document.querySelector(s);
+
+/* "12, 67" -> [12,67]  ·  "" -> []  ·  returns null if anything isn't a minute */
+function parseMinutes(raw){
+  const s = raw.trim();
+  if (!s) return [];
+  const out = [];
+  for (const part of s.split(/[,\s;]+/)){
+    if (!part) continue;
+    if (!/^[0-9]{1,3}$/.test(part)) return null;
+    const n = parseInt(part,10);
+    if (n < 1 || n > 999) return null;
+    out.push(n);
+  }
+  return out;
+}
+
+function preview(){
+  const h = parseMinutes($("#hm").value);
+  const a = parseMinutes($("#am").value);
+  $("#prev").textContent = (h ? h.length : "?") + " – " + (a ? a.length : "?");
+}
+$("#hm").addEventListener("input", preview);
+$("#am").addEventListener("input", preview);
+
+function fail(msg){
+  const e = $("#err");
+  e.textContent = msg;
+  e.hidden = false;
+}
+
+async function rpc(fn, body){
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY)
+    throw new Error("This page has no Supabase keys yet. Add them at the top of admin.html.");
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "apikey":SUPABASE_ANON_KEY,
+      "Authorization":`Bearer ${SUPABASE_ANON_KEY}`
+    },
+    body:JSON.stringify(body)
+  });
+  const text = await r.text();
+  if (!r.ok){
+    if (text.includes("wrong_password")) throw new Error("Wrong password.");
+    throw new Error("Supabase said no (" + r.status + "). " + text.slice(0,160));
+  }
+  return text ? JSON.parse(text) : null;
+}
+
+function verdict(row){
+  if (row.perfect)        return '<span class="pill perfect">Perfect</span>';
+  if (row.score_exact)    return '<span class="pill exact">Exact score</span>';
+  if (row.winner_correct) return '<span class="pill near">Right winner</span>';
+  return '<span class="pill no">Missed</span>';
+}
+
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function draw(rows){
+  $("#rows").innerHTML = rows.map(r => `
+    <tr class="${r.perfect || r.score_exact ? "win" : ""}">
+      <td class="num">${r.rank}</td>
+      <td class="num">${esc(r.account_number)}</td>
+      <td class="num">${esc(r.prediction)}</td>
+      <td>${verdict(r)}</td>
+      <td class="num">${r.minutes_off}</td>
+      <td>${esc(r.txn_ref)}</td>
+      <td>${r.social_handle ? "@" + esc(r.social_handle) : "—"}</td>
+      <td class="num">${new Date(r.submitted_at).toLocaleString("en-GB",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}</td>
+    </tr>`).join("");
+}
+
+$("#go").onclick = async () => {
+  $("#err").hidden = true;
+
+  const h  = parseMinutes($("#hm").value);
+  const a  = parseMinutes($("#am").value);
+  const pw = $("#pw").value;
+
+  if (h === null || a === null)
+    return fail("Goal minutes must be numbers separated by commas, like: 12, 67");
+  if (!pw)
+    return fail("Enter the admin password.");
+
+  const total = h.length + a.length;
+  const label = h.length + " – " + a.length;
+  if (!confirm(`Publish ${label} as the final result?\n\n` +
+      (total ? `Goals at: ${[...h.map(m=>"Al Hilal "+m+"'"), ...a.map(m=>"Rayon "+m+"'")].join(", ")}\n\n` : "No goals.\n\n") +
+      `This goes live on the public results page.`)) return;
+
+  const btn = $("#go");
+  btn.disabled = true;
+  btn.textContent = "Publishing…";
+
+  try{
+    const res = await rpc("publish_result",{
+      p_password: pw,
+      p_home_score: h.length,
+      p_away_score: a.length,
+      p_home_minutes: h,
+      p_away_minutes: a
+    });
+
+    if (!res.ok){
+      if (res.error === "wrong_password")    throw new Error("Wrong password.");
+      if (res.error === "minutes_mismatch")  throw new Error("The goal count didn't match the minutes. Try again.");
+      if (res.error === "bad_minute")        throw new Error("One of those minutes isn't valid.");
+      throw new Error("Couldn't publish: " + res.error);
+    }
+
+    const rows = await rpc("get_results_admin",{ p_password: pw, p_limit: 500 });
+    draw(rows || []);
+    $("#ok").textContent =
+      `Result published: ${label}. ${(rows||[]).length} predictions ranked. The public results page is now live.`;
+    $("#form").classList.add("hide");
+    $("#out").classList.remove("hide");
+    window.scrollTo(0,0);
+
+  }catch(e){
+    fail(e.message);
+  }finally{
+    btn.disabled = false;
+    btn.textContent = "Publish the result";
+  }
+};
+
+$("#again").onclick = () => {
+  $("#out").classList.add("hide");
+  $("#form").classList.remove("hide");
+  window.scrollTo(0,0);
+};
+
+preview();
+</script>
+</body>
+</html>
