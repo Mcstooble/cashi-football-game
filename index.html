@@ -67,18 +67,6 @@ body{
 /* ---------- top bar ---------- */
 .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
 .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;letter-spacing:.01em}
-.logo .key{
-  width:26px;height:26px;border-radius:30% 30% 30% 4%;
-  background:var(--yellow);flex-shrink:0;
-  transform:rotate(45deg);position:relative;
-}
-.logo .key::before,.logo .key::after{
-  content:"";position:absolute;width:3.5px;height:3.5px;border-radius:50%;
-  background:var(--purple);top:34%;
-}
-.logo .key::before{left:30%}
-.logo .key::after{left:52%}
-
 .langtog{
   background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
   color:#fff;font:inherit;font-weight:700;font-size:13px;
@@ -303,7 +291,7 @@ html[dir="ltr"] .steps{direction:ltr}
 <div class="wrap">
 
   <div class="bar">
-    <div class="logo"><span class="key"></span><span>cashi</span></div>
+    <div class="logo">Cashi</div>
     <button class="langtog" id="lang" type="button">English</button>
   </div>
 
@@ -479,7 +467,7 @@ const T = {
     sub3:"تلاتة حاجات وبس: رقم حساب كاشي، رقم أي عملية من آخر ٧ أيام، وحسابك في السوشيال لو عايز الشهرة.",
     gate:"اللعبة دي <b>لمستخدمي كاشي بس</b>. ما عندك حساب؟ سجّل وارجع، بنستناك.",
     acctlbl:"رقم حساب كاشي",
-    accthint:"الرقم المسجّل بيهو محفظة كاشي بتاعتك.",
+    accthint:"رقم الحساب البتستخدمه للدفع والاستلام.",
     reflbl:"أي رقم عملية من آخر ٧ أيام",
     refhint:"افتح تطبيق كاشي، شوف أي عملية من آخر ٧ أيام، والصق رقمها هنا. عايزين نتأكد إنك بتحب كاشي زينا.",
     refph:"الصقها هنا",
@@ -538,7 +526,7 @@ const T = {
     sub3:"Three things: your Cashi Account Number, a transaction reference from the last 7 days, and a social handle if you want the glory.",
     gate:"This one is <b>for Cashi users only</b>. No account? Sort that out and come back, we'll wait.",
     acctlbl:"Cashi Account Number",
-    accthint:"The number your Cashi wallet is registered to.",
+    accthint:"The account number you use to make and receive payments.",
     reflbl:"Any transaction reference from the last 7 days",
     refhint:"Open the Cashi app, pick any transaction from the last 7 days, paste its reference here. We need to know you love Cashi too.",
     refph:"Paste it here",

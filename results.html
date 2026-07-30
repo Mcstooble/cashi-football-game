@@ -38,11 +38,6 @@ body{
 
 .bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px}
-.logo .key{width:26px;height:26px;border-radius:30% 30% 30% 4%;background:var(--yellow);
-  transform:rotate(45deg);position:relative;flex-shrink:0}
-.logo .key::before,.logo .key::after{content:"";position:absolute;width:3.5px;height:3.5px;
-  border-radius:50%;background:var(--purple);top:34%}
-.logo .key::before{left:30%}.logo .key::after{left:52%}
 .langtog{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
   color:#fff;font:inherit;font-weight:700;font-size:13px;padding:8px 14px;
   border-radius:999px;cursor:pointer;letter-spacing:.04em}
@@ -111,7 +106,7 @@ h1 em{font-style:normal;color:var(--yellow)}
 
 <div class="wrap">
   <div class="bar">
-    <div class="logo"><span class="key"></span><span>cashi</span></div>
+    <div class="logo">Cashi</div>
     <button class="langtog" id="lang" type="button">English</button>
   </div>
 
