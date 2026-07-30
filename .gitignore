@@ -1,0 +1,5 @@
+# nothing with a secret in it, ever
+*.sql
+SETUP.md
+DEVOPS-BRIEF.md
+.DS_Store

@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>توقع النتيجة | كاشي</title>
+<meta name="description" content="توقع نتيجة مباراة الهلال أم درمان ورايون سبورت. حصري لمستخدمي كاشي.">
+
+<style>
+/* ============================================================
+   CONFIG — Cashi brand
+   Cashi Purple #4E2D82 · Electric Purple #5F4BCF
+   Cashi Yellow #FFAE00 · Ivory Dune #FFFCF5
+   Mahogany Market #201003 (text only)
+   ============================================================ */
+:root{
+  --purple:#4E2D82;
+  --purple-lit:#5F4BCF;
+  --yellow:#FFAE00;
+  --ivory:#FFFCF5;
+  --ivory-warm:#FFF7EB;
+  --nile:#20C5D9;          /* the one secondary colour on this asset */
+  --ink:#201003;
+  --r:22px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+html,body{height:100%}
+
+body{
+  /* Brother 1816 is the brand face but it is an Adobe Font and cannot be
+     loaded without an external request. This stack is the closest
+     geometric fallback available on Android and iOS. */
+  font-family:"Brother 1816","Avenir Next","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  background:var(--purple);
+  color:#fff;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* Layered diamonds from the Cashi graphic system, sitting behind everything */
+.field{
+  position:fixed;inset:0;z-index:0;overflow:hidden;
+  background:linear-gradient(160deg,var(--purple) 0%,var(--purple-lit) 100%);
+}
+.field i{
+  position:absolute;left:50%;top:38%;
+  border-radius:26%;
+  transform:translate(-50%,-50%) rotate(45deg);
+  border:1px solid #fff;
+}
+.field i:nth-child(1){width:52vmax;height:52vmax;opacity:.13}
+.field i:nth-child(2){width:66vmax;height:66vmax;opacity:.10}
+.field i:nth-child(3){width:83vmax;height:83vmax;opacity:.07}
+.field i:nth-child(4){width:104vmax;height:104vmax;opacity:.05}
+.field i:nth-child(5){width:130vmax;height:130vmax;opacity:.03}
+
+.wrap{
+  position:relative;z-index:1;
+  min-height:100%;min-height:100dvh;
+  display:flex;flex-direction:column;
+  padding:max(18px,env(safe-area-inset-top)) 20px max(22px,env(safe-area-inset-bottom));
+  max-width:560px;margin:0 auto;
+}
+
+/* ---------- top bar ---------- */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;letter-spacing:.01em}
+.logo .key{
+  width:26px;height:26px;border-radius:30% 30% 30% 4%;
+  background:var(--yellow);flex-shrink:0;
+  transform:rotate(45deg);position:relative;
+}
+.logo .key::before,.logo .key::after{
+  content:"";position:absolute;width:3.5px;height:3.5px;border-radius:50%;
+  background:var(--purple);top:34%;
+}
+.logo .key::before{left:30%}
+.logo .key::after{left:52%}
+
+.langtog{
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
+  color:#fff;font:inherit;font-weight:700;font-size:13px;
+  padding:8px 14px;border-radius:999px;cursor:pointer;
+  letter-spacing:.04em;
+}
+.langtog:active{transform:scale(.96)}
+
+/* ---------- hero ---------- */
+.mid{flex:1;display:flex;flex-direction:column;justify-content:center;padding:26px 0}
+
+.kicker{
+  font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--yellow);margin-bottom:16px;
+}
+
+h1{
+  font-size:clamp(40px,13vw,68px);
+  line-height:.95;font-weight:800;letter-spacing:-.02em;
+  margin-bottom:14px;
+}
+h1 em{font-style:normal;color:var(--yellow)}
+
+.sub{
+  font-size:clamp(16px,4.4vw,19px);line-height:1.45;
+  opacity:.88;font-weight:400;max-width:26em;
+}
+
+/* ---------- the scoreline ---------- */
+.tie{
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:8px;
+  margin:32px 0 6px;
+}
+.side{display:flex;flex-direction:column;align-items:center;gap:12px}
+.team{
+  font-size:13px;font-weight:800;line-height:1.25;text-align:center;
+  min-height:2.5em;display:flex;align-items:center;
+  letter-spacing:.02em;
+}
+.dash{
+  font-size:clamp(30px,9vw,44px);font-weight:800;opacity:.35;
+  align-self:center;padding-top:34px;
+}
+
+.num{
+  width:100%;max-width:118px;
+  background:var(--ivory);color:var(--purple);
+  border-radius:var(--r);
+  padding:10px 0 12px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  box-shadow:0 10px 0 rgba(0,0,0,.16);
+}
+.num output{
+  font-size:clamp(46px,15vw,66px);font-weight:800;line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.steps{display:flex;gap:8px;margin-top:6px}
+.steps button{
+  width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;
+  background:var(--purple);color:#fff;
+  font:inherit;font-size:22px;font-weight:800;line-height:1;
+  display:grid;place-items:center;
+}
+.steps button:disabled{opacity:.22;cursor:default}
+.steps button:active:not(:disabled){transform:scale(.9)}
+
+/* ---------- goal minute rows, grouped by team ---------- */
+.goals{display:flex;flex-direction:column;gap:20px;margin-top:8px}
+
+.grp{
+  border-radius:20px;overflow:hidden;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.16);
+}
+.grp[data-side="home"]{box-shadow:inset 4px 0 0 #fff}
+html[dir="rtl"] .grp[data-side="home"]{box-shadow:inset -4px 0 0 #fff}
+.grp[data-side="away"]{box-shadow:inset 4px 0 0 var(--nile)}
+html[dir="rtl"] .grp[data-side="away"]{box-shadow:inset -4px 0 0 var(--nile)}
+
+.grphead{
+  display:flex;align-items:center;gap:9px;
+  padding:14px 16px 12px;
+  font-size:15px;font-weight:800;letter-spacing:.01em;
+  border-bottom:1px solid rgba(255,255,255,.14);
+}
+.grphead .dot{width:11px;height:11px;border-radius:3px;transform:rotate(45deg);flex-shrink:0}
+.grp[data-side="home"] .dot{background:#fff}
+.grp[data-side="away"] .dot{background:var(--nile)}
+.grphead .cnt{margin-inline-start:auto;font-size:13px;font-weight:600;opacity:.6}
+
+.grp .rows{display:flex;flex-direction:column;padding:6px 8px 10px}
+
+.goal{
+  display:flex;align-items:center;gap:12px;
+  padding:9px 8px;
+}
+.goal + .goal{border-top:1px solid rgba(255,255,255,.09)}
+.goal .who{font-size:15px;font-weight:700;flex:1;line-height:1.3}
+.goal input{
+  width:86px;flex-shrink:0;
+  background:var(--ivory);color:var(--purple);
+  border:0;border-radius:13px;
+  font:inherit;font-size:24px;font-weight:800;text-align:center;
+  padding:9px 6px;
+  font-variant-numeric:tabular-nums;
+}
+.goal input::placeholder{color:rgba(78,45,130,.32);font-weight:700}
+.goal .unit{font-size:13px;font-weight:700;opacity:.7;flex-shrink:0}
+
+/* ---------- form fields ---------- */
+.field-lg{margin-top:22px}
+.field-lg label{display:block;font-size:14px;font-weight:700;margin-bottom:9px;opacity:.9}
+.field-lg input{
+  width:100%;
+  background:var(--ivory);color:var(--purple);
+  border:0;border-radius:18px;
+  font:inherit;font-size:26px;font-weight:800;
+  padding:17px 18px;
+  letter-spacing:.06em;
+  font-variant-numeric:tabular-nums;
+}
+.field-lg input::placeholder{color:rgba(78,45,130,.3);letter-spacing:.02em}
+.field-lg .hint{font-size:13px;opacity:.72;margin-top:9px;line-height:1.45}
+
+.gate{
+  background:rgba(255,174,0,.14);border:1px solid rgba(255,174,0,.4);
+  border-radius:18px;padding:15px 16px;margin-top:20px;
+  font-size:14px;line-height:1.5;
+}
+.gate b{color:var(--yellow)}
+
+/* ---------- actions ---------- */
+.acts{flex-shrink:0;padding-top:22px}
+
+.cta{
+  display:block;width:100%;
+  background:var(--yellow);color:var(--ink);
+  border:0;border-radius:999px;
+  font:inherit;font-size:20px;font-weight:800;letter-spacing:.01em;
+  padding:20px;cursor:pointer;
+  box-shadow:0 8px 0 rgba(0,0,0,.2);
+}
+.cta:active:not(:disabled){transform:translateY(4px);box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.cta:disabled{opacity:.4;cursor:default;box-shadow:0 8px 0 rgba(0,0,0,.1)}
+
+.back{
+  display:block;width:100%;background:none;border:0;
+  color:#fff;font:inherit;font-size:15px;font-weight:600;
+  opacity:.7;padding:15px;margin-top:4px;cursor:pointer;
+}
+
+.meta{
+  text-align:center;font-size:13px;opacity:.68;margin-top:14px;line-height:1.5;
+}
+.meta b{opacity:1;font-weight:700}
+
+/* countdown */
+.clock{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  margin-top:16px;font-size:14px;
+}
+.clock .lbl{opacity:.7;font-weight:600}
+.clock .t{
+  font-weight:800;font-variant-numeric:tabular-nums;
+  color:var(--yellow);letter-spacing:.02em;
+}
+
+/* one-shot warning */
+.once{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+  border-radius:18px;padding:15px 16px;margin-top:18px;
+  font-size:14px;line-height:1.5;
+}
+.once b{font-weight:800}
+
+.err{
+  background:rgba(255,255,255,.95);color:#B0202B;
+  border-radius:16px;padding:14px 16px;margin-top:16px;
+  font-size:14px;font-weight:700;line-height:1.45;
+}
+
+/* ---------- confirmation ---------- */
+.tick{
+  width:78px;height:78px;border-radius:30% 30% 30% 6%;
+  background:var(--yellow);transform:rotate(45deg);
+  display:grid;place-items:center;margin-bottom:26px;
+}
+.tick span{transform:rotate(-45deg);font-size:38px;line-height:1;color:var(--purple)}
+
+.card{
+  background:var(--ivory);color:var(--purple);
+  border-radius:var(--r);padding:22px;margin-top:22px;
+  box-shadow:0 10px 0 rgba(0,0,0,.16);
+}
+.card .big{font-size:clamp(38px,12vw,54px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.card .lbl{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.55;margin-bottom:8px}
+.card .mins{font-size:16px;font-weight:700;margin-top:14px;line-height:1.5}
+.card hr{border:0;border-top:1px solid rgba(78,45,130,.15);margin:18px 0}
+
+/* ---------- screens ---------- */
+[data-screen]{display:none}
+[data-screen].on{display:flex;flex-direction:column;flex:1}
+
+.ltr{direction:ltr}
+html[dir="ltr"] .steps{direction:ltr}
+</style>
+</head>
+<body>
+
+<div class="field" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+
+<div class="wrap">
+
+  <div class="bar">
+    <div class="logo"><span class="key"></span><span>cashi</span></div>
+    <button class="langtog" id="lang" type="button">English</button>
+  </div>
+
+  <!-- ============ 1. SCORE ============ -->
+  <section data-screen="score" class="on">
+    <div class="mid">
+      <div class="kicker" data-t="kicker"></div>
+      <h1 data-t="h1"></h1>
+      <p class="sub" data-t="sub"></p>
+
+      <div class="tie">
+        <div class="side">
+          <div class="team" data-t="home"></div>
+          <div class="num"><output id="hs">0</output></div>
+          <div class="steps">
+            <button type="button" data-step="hs,-1">−</button>
+            <button type="button" data-step="hs,1">+</button>
+          </div>
+        </div>
+        <div class="dash">–</div>
+        <div class="side">
+          <div class="team" data-t="away"></div>
+          <div class="num"><output id="as">0</output></div>
+          <div class="steps">
+            <button type="button" data-step="as,-1">−</button>
+            <button type="button" data-step="as,1">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acts">
+      <button class="cta" id="go1" type="button" data-t="cta1"></button>
+      <div class="clock">
+        <span class="lbl" data-t="clocklbl"></span>
+        <span class="t ltr" id="clock"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. GOAL MINUTES ============ -->
+  <section data-screen="mins">
+    <div class="mid">
+      <div class="kicker" data-t="kicker2"></div>
+      <h1 data-t="h2"></h1>
+      <p class="sub" data-t="sub2"></p>
+      <div class="goals" id="goalrows"></div>
+    </div>
+    <div class="acts">
+      <button class="cta" id="go2" type="button" data-t="cta2"></button>
+      <button class="back" type="button" data-back="score" data-t="back"></button>
+    </div>
+  </section>
+
+  <!-- ============ 3. ACCOUNT NUMBER ============ -->
+  <section data-screen="acct">
+    <div class="mid">
+      <div class="kicker" data-t="kicker3"></div>
+      <h1 data-t="h3"></h1>
+
+      <div class="gate" data-t="gate"></div>
+
+      <div class="field-lg">
+        <label for="acct" data-t="acctlbl"></label>
+        <input id="acct" class="ltr" type="tel" inputmode="numeric" autocomplete="off"
+               maxlength="15" placeholder="09XXXXXXXX">
+      </div>
+
+      <div class="once" data-t="once"></div>
+
+      <div id="err" hidden></div>
+    </div>
+    <div class="acts">
+      <button class="cta" id="go3" type="button" data-t="cta3"></button>
+      <button class="back" type="button" data-back="mins" data-t="back"></button>
+    </div>
+  </section>
+
+  <!-- ============ 4. DONE ============ -->
+  <section data-screen="done">
+    <div class="mid">
+      <div class="tick"><span>✓</span></div>
+      <h1 data-t="h4"></h1>
+      <p class="sub" data-t="sub4"></p>
+
+      <div class="card">
+        <div class="lbl" data-t="yourpick"></div>
+        <div class="big" id="sumscore">0 – 0</div>
+        <div class="mins" id="summins"></div>
+        <hr>
+        <div class="lbl" data-t="acctlbl"></div>
+        <div class="mins ltr" id="sumacct" style="margin-top:4px"></div>
+      </div>
+    </div>
+    <div class="acts">
+      <button class="cta" id="share" type="button" data-t="cta4"></button>
+    </div>
+  </section>
+
+  <!-- ============ 5. CLOSED ============ -->
+  <section data-screen="closed">
+    <div class="mid">
+      <div class="kicker" data-t="kicker5"></div>
+      <h1 data-t="h5"></h1>
+      <p class="sub" data-t="sub5"></p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+
+/* Paste the two values from Supabase -> Project Settings -> API.
+   Leaving these blank runs the page in preview mode: everything
+   works and looks real, but nothing is saved. */
+const SUPABASE_URL = "";
+const SUPABASE_ANON_KEY = "";
+
+/* Kickoff. Predictions lock at this moment.
+   Set to the EARLIER of the two conflicting reported times
+   (17:00 Sudan / UTC+2). If kickoff is confirmed as 19:00 Sudan,
+   change this to 2026-08-01T17:00:00Z */
+const KICKOFF = new Date("2026-08-01T15:00:00Z");
+
+
+/* ============================================================
+   COPY
+   ============================================================ */
+const T = {
+  ar:{
+    dir:"rtl", other:"English",
+    home:"الهلال أم درمان", away:"رايون سبورت",
+
+    kicker:"كأس كاف للأندية · السبت",
+    h1:'قول لينا <em>النتيجة</em>.<br>بالدقيقة.',
+    sub:"توقّع النتيجة النهائية ووقت كل هدف. أقرب واحد يكسب.",
+    cta1:"التالي",
+    clocklbl:"بيقفل مع صافرة البداية",
+
+    kicker2:"٢ من ٣",
+    h2:"الأهداف دي<br>بتجي متين؟",
+    sub2:"دقيقة واحدة لكل هدف قلته.",
+    cta2:"التالي",
+
+    kicker3:"٣ من ٣",
+    h3:"رقم كاشي<br>بتاعك.",
+    gate:"اللعبة دي <b>لمستخدمي كاشي بس</b>. ما عندك حساب؟ سجّل في كاشي وارجع.",
+    acctlbl:"رقم كاشي",
+    once:"<b>فرصة واحدة لكل رقم.</b> ما تقدر تغيّر توقّعك بعد ما ترسله. خليها صح من أول مرة.",
+    cta3:"أرسل",
+
+    h4:"تمام.<br>انت <em>داخل</em>.",
+    sub4:"بنعلن الفائزين بعد نهاية المباراة. تابع قنوات كاشي.",
+    yourpick:"توقّعك",
+    cta4:"أرسل لأصحابك",
+
+    kicker5:"التوقّع أُقفل",
+    h5:"المباراة<br>بدأت.",
+    sub5:"التوقّع أُقفل مع صافرة البداية. تابع قنوات كاشي وشوف منو زبطها.",
+
+    back:"رجوع",
+    mineach:"د",
+    goals_n:n=>`${n} ${n===1?"هدف":"أهداف"}`,
+    goalno:n=>`الهدف ${n}`,
+    sharetxt:t=>`قلت ${t} في مباراة الهلال ورايون سبورت مع كاشي. قول انت كمان:`,
+
+    e_min:"اكتب دقيقة لكل هدف.",
+    e_acct:"اكتب رقم كاشي صحيح.",
+    e_dup:"الرقم ده عنده توقّع مسجّل. فرصة واحدة لكل رقم.",
+    e_closed:"التوقّع أُقفل. المباراة بدأت.",
+    e_net:"في مشكلة في الاتصال. حاول تاني.",
+    e_preview:"وضع المعاينة. التوقّع ما انحفظ."
+  },
+  en:{
+    dir:"ltr", other:"عربي",
+    home:"Al Hilal Omdurman", away:"Rayon Sports",
+
+    kicker:"CECAFA Club Cup · Saturday",
+    h1:'Call the <em>score</em>.<br>To the minute.',
+    sub:"Predict the final score and when every goal goes in. Closest call wins.",
+    cta1:"Next",
+    clocklbl:"Closes at kick-off",
+
+    kicker2:"2 of 3",
+    h2:"When do<br>the goals go in?",
+    sub2:"One minute for each goal you called.",
+    cta2:"Next",
+
+    kicker3:"3 of 3",
+    h3:"Your Cashi<br>number.",
+    gate:"This one is <b>for Cashi users only</b>. No account? Get on Cashi and come back.",
+    acctlbl:"Cashi number",
+    once:"<b>One entry per number.</b> You can't change it after you send it. Make it count.",
+    cta3:"Send it",
+
+    h4:"Done.<br>You're <em>in</em>.",
+    sub4:"We announce the winners after the final whistle. Watch Cashi's channels.",
+    yourpick:"Your call",
+    cta4:"Send to your friends",
+
+    kicker5:"Predictions closed",
+    h5:"The match<br>has started.",
+    sub5:"Predictions closed at kick-off. Watch Cashi's channels to see who called it.",
+
+    back:"Back",
+    mineach:"min",
+    goals_n:n=>`${n} ${n===1?"goal":"goals"}`,
+    goalno:n=>`Goal ${n}`,
+    sharetxt:t=>`I called ${t} for Al Hilal vs Rayon Sports with Cashi. Make your call:`,
+
+    e_min:"Give a minute for every goal.",
+    e_acct:"Enter a valid Cashi number.",
+    e_dup:"That number has already played. One entry per number.",
+    e_closed:"Predictions are closed. The match has started.",
+    e_net:"Connection problem. Try again.",
+    e_preview:"Preview mode. Nothing was saved."
+  }
+};
+
+let lang = "ar";
+const state = { hs:0, as:0, homeMins:[], awayMins:[] };
+
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function paint(){
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir  = t.dir;
+  $("#lang").textContent = t.other;
+
+  $$("[data-t]").forEach(el=>{
+    const v = t[el.dataset.t];
+    if (typeof v === "string") el.innerHTML = v;
+  });
+
+  $("#hs").textContent = state.hs;
+  $("#as").textContent = state.as;
+
+  $$("[data-step]").forEach(b=>{
+    const [k,d] = b.dataset.step.split(",");
+    b.disabled = (Number(d) < 0 && state[k] === 0) || (Number(d) > 0 && state[k] >= 15);
+  });
+}
+
+function show(name){
+  $$("[data-screen]").forEach(s => s.classList.toggle("on", s.dataset.screen === name));
+  window.scrollTo(0,0);
+  $("#err").hidden = true;
+}
+
+/* One block per team, one row per goal inside it */
+function buildGoalRows(){
+  const t = T[lang], box = $("#goalrows");
+  box.innerHTML = "";
+
+  [["home", state.hs, t.home, state.homeMins],
+   ["away", state.as, t.away, state.awayMins]].forEach(([side,n,name,prev])=>{
+    if (!n) return;
+
+    const grp = document.createElement("div");
+    grp.className = "grp";
+    grp.dataset.side = side;
+
+    let rows = "";
+    for (let i=0;i<n;i++){
+      rows +=
+        `<div class="goal">` +
+          `<div class="who">${t.goalno(i+1)}</div>` +
+          `<input class="ltr" type="tel" inputmode="numeric" maxlength="3" placeholder="--"` +
+                 ` data-side="${side}" value="${prev[i] ?? ""}">` +
+          `<span class="unit">${t.mineach}</span>` +
+        `</div>`;
+    }
+
+    grp.innerHTML =
+      `<div class="grphead"><span class="dot"></span>${name}` +
+      `<span class="cnt">${t.goals_n(n)}</span></div>` +
+      `<div class="rows">${rows}</div>`;
+
+    box.appendChild(grp);
+  });
+}
+
+function readGoalRows(){
+  const h = [], a = [];
+  let ok = true;
+  $$("#goalrows input").forEach(inp=>{
+    const n = parseInt(inp.value,10);
+    if (!Number.isInteger(n) || n < 1) ok = false;
+    (inp.dataset.side === "home" ? h : a).push(n);
+  });
+  state.homeMins = h; state.awayMins = a;
+  return ok;
+}
+
+/* ---------- countdown to kick-off ---------- */
+function tick(){
+  const left = KICKOFF.getTime() - Date.now();
+  if (left <= 0){ $("#clock").textContent = "00:00:00"; return show("closed"); }
+
+  const d = Math.floor(left/864e5);
+  const h = Math.floor(left/36e5) % 24;
+  const m = Math.floor(left/6e4) % 60;
+  const s = Math.floor(left/1e3) % 60;
+  const p = v => String(v).padStart(2,"0");
+
+  $("#clock").textContent = d
+    ? `${d}d ${p(h)}:${p(m)}:${p(s)}`
+    : `${p(h)}:${p(m)}:${p(s)}`;
+}
+
+function fail(key){
+  const e = $("#err");
+  e.className = "err";
+  e.textContent = T[lang][key] || key;
+  e.hidden = false;
+  e.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+
+/* ============================================================
+   SUPABASE — plain fetch, no library
+   ============================================================ */
+async function rpc(fn, body){
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return { __preview:true };
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "apikey":SUPABASE_ANON_KEY,
+      "Authorization":`Bearer ${SUPABASE_ANON_KEY}`
+    },
+    body:JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error("rpc " + r.status);
+  return r.json();
+}
+
+async function submit(){
+  const acct = $("#acct").value.replace(/\D/g,"");
+
+  if (!/^[0-9]{6,15}$/.test(acct)) return fail("e_acct");
+  if (Date.now() >= KICKOFF.getTime()) return show("closed");
+
+  const btn = $("#go3");
+  btn.disabled = true;
+
+  try{
+    const res = await rpc("submit_prediction",{
+      p_account: acct,
+      p_home_score: state.hs,
+      p_away_score: state.as,
+      p_home_minutes: state.homeMins,
+      p_away_minutes: state.awayMins
+    });
+
+    if (res.__preview){
+      summarise(acct); show("done"); fail("e_preview"); return;
+    }
+    if (res.ok){ summarise(acct); show("done"); return; }
+
+    if (res.error === "already_entered") return fail("e_dup");
+    if (res.error === "closed")          return show("closed");
+    return fail("e_net");
+
+  }catch(_){
+    fail("e_net");
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+function summarise(acct){
+  const t = T[lang];
+  $("#sumscore").textContent = `${state.hs} – ${state.as}`;
+  const all = [
+    ...state.homeMins.map(m=>[m,t.home]),
+    ...state.awayMins.map(m=>[m,t.away])
+  ].sort((x,y)=>x[0]-y[0]);
+  $("#summins").innerHTML = all.length
+    ? all.map(([m,who])=>`${m}${t.mineach} · ${who}`).join("<br>")
+    : "";
+  $("#sumacct").textContent = "****" + acct.slice(-4);
+}
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+$("#lang").onclick = ()=>{
+  lang = lang === "ar" ? "en" : "ar";
+  paint();
+  if ($('[data-screen="mins"]').classList.contains("on")) buildGoalRows();
+};
+
+$$("[data-step]").forEach(b=> b.onclick = ()=>{
+  const [k,d] = b.dataset.step.split(",");
+  state[k] = Math.max(0, Math.min(15, state[k] + Number(d)));
+  paint();
+});
+
+$$("[data-back]").forEach(b=> b.onclick = ()=> show(b.dataset.back));
+
+$("#go1").onclick = ()=>{
+  if (Date.now() >= KICKOFF.getTime()) return show("closed");
+  if (state.hs + state.as === 0){
+    state.homeMins = []; state.awayMins = [];
+    return show("acct");            /* 0-0 has no goals to time */
+  }
+  buildGoalRows();
+  show("mins");
+};
+
+$("#go2").onclick = ()=>{
+  if (!readGoalRows()){ show("mins"); return fail("e_min"); }
+  show("acct");
+};
+
+$("#go3").onclick = submit;
+
+$("#share").onclick = ()=>{
+  const t = T[lang];
+  const txt = `${t.sharetxt(`${state.hs}–${state.as}`)} https://football.getcashi.com`;
+  if (navigator.share) navigator.share({text:txt}).catch(()=>{});
+  else navigator.clipboard?.writeText(txt);
+};
+
+/* digits only, everywhere */
+document.addEventListener("input", e=>{
+  if (e.target.matches('input[type="tel"]'))
+    e.target.value = e.target.value.replace(/\D/g,"");
+});
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+paint();
+tick();
+setInterval(tick, 1000);
+if (Date.now() >= KICKOFF.getTime()) show("closed");
+</script>
+</body>
+</html>
