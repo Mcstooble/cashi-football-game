@@ -771,13 +771,22 @@ $$("[data-step]").forEach(b=> b.onclick = ()=>{
   paint();
 });
 
-$$("[data-back]").forEach(b=> b.onclick = ()=> show(b.dataset.back));
+/* Back has to respect the fact that a 0-0 prediction skips the minutes
+   screen entirely, otherwise it lands the user on a screen they never saw. */
+$$("[data-back]").forEach(b=> b.onclick = ()=>{
+  let target = b.dataset.back;
+  if (target === "mins" && state.hs + state.as === 0) target = "score";
+  show(target);
+});
 
 $("#go1").onclick = ()=>{
   if (Date.now() >= KICKOFF.getTime()) return show("closed");
   if (state.hs + state.as === 0){
+    /* 0-0 has no goals to time. Clear the rows too, or a stale set from an
+       earlier score stays in the DOM and reappears if the user goes back. */
     state.homeMins = []; state.awayMins = [];
-    return show("acct");            /* 0-0 has no goals to time */
+    $("#goalrows").innerHTML = "";
+    return show("acct");
   }
   buildGoalRows();
   show("mins");
