@@ -174,12 +174,6 @@ html[dir="rtl"] .grp[data-side="away"]{box-shadow:inset -4px 0 0 var(--nile)}
 .field-lg input:focus-visible{outline:2px solid var(--purple-lit);outline-offset:1px;border-color:transparent}
 .field-lg .hint{font-size:13px;opacity:.65;margin-top:9px;line-height:1.45}
 
-.opt{
-  font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-  background:var(--wash);border:1px solid var(--line);
-  border-radius:999px;padding:3px 9px;opacity:.8;
-}
-
 .gate{
   background:rgba(255,174,0,.16);border:1.5px solid rgba(255,174,0,.55);
   border-radius:18px;padding:15px 16px;margin-top:20px;
@@ -338,16 +332,6 @@ html[dir="ltr"] .steps{direction:ltr}
         <p class="hint" data-t="refhint"></p>
       </div>
 
-      <div class="field-lg">
-        <label for="social">
-          <span data-t="sociallbl"></span>
-          <span class="opt" data-t="optional"></span>
-        </label>
-        <input id="social" class="sm ltr" type="text" autocomplete="off"
-               maxlength="40" placeholder="@yourhandle">
-        <p class="hint" data-t="socialhint"></p>
-      </div>
-
       <div class="once" data-t="once"></div>
 
       <div id="err" hidden></div>
@@ -433,17 +417,13 @@ const T = {
 
     kicker3:"٣ من ٣",
     h3:"منو <em>البيتوقّع</em>؟",
-    sub3:"تلاتة حاجات وبس: رقم حساب كاشي، رقم عملية دفع سويتها في آخر ٧ أيام، وحسابك في السوشيال لو عايز تتشمخر.",
+    sub3:"حاجتين وبس: رقم حساب كاشي، ورقم عملية دفع سويتها في آخر ٧ أيام.",
     gate:"<b>لفريق كاشي بس.</b> اللعبة دي داخلية. لو ما بتشتغل معانا، انت في المكان الغلط.",
     acctlbl:"رقم حساب كاشي",
     accthint:"رقم الحساب البتستخدمه للدفع والاستلام.",
     reflbl:"رقم عملية دفع سويتها في آخر ٧ أيام",
     refhint:"أي قروش رسلتها من حسابك في كاشي لحساب كاشي تاني. لصاحبك، أو لأهلك، أو لتاجر كاشي. افتح التطبيق، لقى العملية ديك، والصق رقمها هنا. عايزين نتأكد إنك بتحب كاشي زينا.",
     refph:"الصقها هنا",
-    socialph:"@حسابك",
-    sociallbl:"حسابك في إنستغرام أو فيسبوك أو إكس",
-    optional:"اختياري",
-    socialhint:"اكتب حسابك، ولو كسبت بنعلن اسمك <b>ملك التوقّعات</b> قدام الفريق كلو. وإلا بنقول «واحد من الزملاء» وخلاص.",
     once:"<b>فرصة واحدة لكل رقم.</b> ما في تعديل، وما في «أنا قصدي ٢-١».",
     cta3:"ثبّتها",
 
@@ -492,17 +472,13 @@ const T = {
 
     kicker3:"3 of 3",
     h3:"So who's<br><em>calling</em> it?",
-    sub3:"Three things: your Cashi Account Number, the reference from a payment you sent in the last 7 days, and your handle if you want the bragging rights.",
+    sub3:"Two things: your Cashi Account Number, and the reference from a payment you sent in the last 7 days.",
     gate:"<b>Cashi team only.</b> This one stays inside the building. If you don't work here, you're in the wrong place.",
     acctlbl:"Cashi Account Number",
     accthint:"The account number you use to make and receive payments.",
     reflbl:"Reference from a payment you sent in the last 7 days",
     refhint:"Any money you sent from your Cashi account to another Cashi account. A friend, a family member, or a Cashi merchant. Open the app, find that payment, paste its reference here. We need to know you love Cashi too.",
     refph:"Paste it here",
-    socialph:"@yourhandle",
-    sociallbl:"Instagram, Facebook or X handle",
-    optional:"Optional",
-    socialhint:"Drop your handle. Win with it in here and we crown you <b>King of the Predictors</b> in front of the whole team. Leave it blank and we'll just say \"someone in ops\".",
     once:"<b>One entry per number.</b> No edits, no takebacks, no \"I meant 2-1\".",
     cta3:"Lock it in",
 
@@ -552,8 +528,7 @@ function paint(){
     if (typeof v === "string") el.innerHTML = v;
   });
 
-  $("#ref").placeholder    = t.refph;
-  $("#social").placeholder = t.socialph;
+  $("#ref").placeholder = t.refph;
 
   $("#hs").textContent = state.hs;
   $("#as").textContent = state.as;
@@ -659,8 +634,7 @@ async function rpc(fn, body){
 
 async function submit(){
   const acct   = $("#acct").value.replace(/\D/g,"");
-  const ref    = $("#ref").value.trim();
-  const social = $("#social").value.trim().replace(/^@+/,"");
+  const ref  = $("#ref").value.trim();
 
   if (!/^[0-9]{6,15}$/.test(acct)) return fail("e_acct");
   if (ref.length < 4)              return fail("e_ref");
@@ -673,7 +647,7 @@ async function submit(){
     const res = await rpc("submit_prediction",{
       p_account: acct,
       p_txn_ref: ref,
-      p_social: social || null,
+      p_social: null,
       p_home_score: state.hs,
       p_away_score: state.as,
       p_home_minutes: state.homeMins,

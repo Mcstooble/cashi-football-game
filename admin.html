@@ -179,7 +179,7 @@ tr.win td:first-child{font-weight:800}
           <thead>
             <tr>
               <th>#</th><th>Account</th><th>Their call</th><th>Result</th>
-              <th>Mins off</th><th>Transaction ref</th><th>Social</th><th>Entered</th>
+              <th>Mins off</th><th>Transaction ref</th><th>Entered</th>
             </tr>
           </thead>
           <tbody id="rows"></tbody>
@@ -274,7 +274,6 @@ function draw(rows){
       <td>${verdict(r)}</td>
       <td class="num">${r.minutes_off}</td>
       <td>${esc(r.txn_ref)}</td>
-      <td>${r.social_handle ? "@" + esc(r.social_handle) : "—"}</td>
       <td class="num">${new Date(r.submitted_at).toLocaleString("en-GB",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}</td>
     </tr>`).join("");
 }
