@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>النتائج | كاشي</title>
-<meta name="description" content="نتائج لعبة التوقّعات: الهلال أم درمان ورايون سبورت.">
+<title>النتائج | فريق كاشي</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="نتائج لعبة التوقّعات الداخلية لفريق كاشي.">
 
 <style>
 :root{
@@ -14,7 +15,9 @@
   --ivory:#FFFCF5;
   --nile:#20C5D9;
   --ink:#201003;
-  --bg:#190A2E;
+  --bg:#FFFCF5;
+  --line:rgba(78,45,130,.16);
+  --wash:rgba(78,45,130,.05);
   --r:22px;
   --display:"Haettenschweiler","Impact","Arial Narrow","Roboto Condensed",
             "Helvetica Neue Condensed Bold","Brother 1816",system-ui,sans-serif;
@@ -23,7 +26,7 @@
 html,body{min-height:100%}
 body{
   font-family:"Brother 1816","Avenir Next","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
-  background:var(--bg);color:#fff;
+  background:var(--bg);color:var(--ink);
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
 
@@ -37,24 +40,24 @@ body{
 
 .bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .logo{font-family:var(--display);font-weight:900;font-size:26px;
-  letter-spacing:.03em;text-transform:uppercase}
-.langtog{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
-  color:#fff;font:inherit;font-weight:700;font-size:13px;padding:8px 14px;
+  letter-spacing:.03em;text-transform:uppercase;color:var(--purple)}
+.langtog{background:none;border:1.5px solid var(--line);
+  color:var(--purple);font:inherit;font-weight:700;font-size:13px;padding:8px 14px;
   border-radius:999px;cursor:pointer;letter-spacing:.04em}
 
 .kicker{font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--yellow);margin:34px 0 14px}
+  color:var(--purple-lit);margin:34px 0 14px}
 h1{font-family:var(--display);font-size:clamp(54px,17vw,96px);
   line-height:.82;font-weight:900;letter-spacing:-.015em;
-  text-transform:uppercase;margin-bottom:20px;text-wrap:balance}
+  text-transform:uppercase;margin-bottom:20px;text-wrap:balance;color:var(--purple)}
 html[lang="ar"] h1{font-family:"Brother 1816",system-ui,sans-serif;
   font-size:clamp(42px,13vw,70px);line-height:1.02;letter-spacing:0}
-h1 em{font-style:normal;color:var(--yellow)}
-.sub{font-size:clamp(15px,4.2vw,18px);line-height:1.5;opacity:.86;max-width:30em}
+h1 em{font-style:normal;color:var(--purple-lit)}
+.sub{font-size:clamp(15px,4.2vw,18px);line-height:1.5;opacity:.75;max-width:30em}
 
 /* the final score */
 .final{
-  background:var(--ivory);color:var(--purple);border-radius:var(--r);
+  background:var(--purple);color:#fff;border-radius:var(--r);
   padding:24px 22px;margin-top:28px;
 }
 .final .lbl{font-size:11px;font-weight:800;letter-spacing:.14em;
@@ -65,41 +68,41 @@ h1 em{font-style:normal;color:var(--yellow)}
   font-weight:900;line-height:.88;
   font-variant-numeric:tabular-nums;white-space:nowrap}
 .final .mins{font-size:15px;font-weight:700;margin-top:18px;padding-top:16px;
-  border-top:1px solid rgba(78,45,130,.15);line-height:1.6}
+  border-top:1px solid rgba(255,255,255,.2);line-height:1.6}
 
 /* the board */
 .board{margin-top:30px;display:flex;flex-direction:column;gap:9px}
 
 .ent{
   display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;
-  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.17);
+  background:var(--wash);border:1px solid var(--line);
   border-radius:16px;padding:14px 15px;
 }
 .ent .pos{font-family:var(--display);font-size:26px;font-weight:900;font-variant-numeric:tabular-nums;
   opacity:.6;min-width:1.6em;text-align:center}
 .ent .who{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
-.ent .who small{display:block;font-size:13px;font-weight:600;opacity:.7;
+.ent .who small{display:block;font-size:13px;font-weight:600;opacity:.6;
   margin-top:3px;font-variant-numeric:tabular-nums}
 .ent .tag{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
   border-radius:999px;padding:5px 10px;white-space:nowrap}
 .tag.perfect{background:var(--yellow);color:var(--ink)}
-.tag.exact{background:#fff;color:var(--purple)}
-.tag.near{background:rgba(32,197,217,.28);color:#fff}
-.tag.no{background:rgba(255,255,255,.12);opacity:.65}
+.tag.exact{background:var(--purple);color:#fff}
+.tag.near{background:rgba(32,197,217,.22);color:#0E5A66}
+.tag.no{background:var(--wash);border:1px solid var(--line);opacity:.7}
 
 /* the winner */
 .ent.king{
-  background:var(--ivory);color:var(--purple);border:0;
+  background:var(--purple);color:#fff;border:0;
   padding:20px 18px;
 }
 .ent.king .pos{opacity:1;color:var(--yellow);font-size:36px}
 .ent.king .who{font-size:20px}
-.ent.king .who small{opacity:.6}
+.ent.king .who small{opacity:.7}
 .crown{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--yellow);margin-bottom:12px;display:block}
+  color:var(--purple-lit);margin-bottom:12px;display:block}
 
-.note{font-size:13px;opacity:.65;margin-top:26px;line-height:1.6}
-.state{font-size:16px;opacity:.85;margin-top:30px;line-height:1.6}
+.note{font-size:13px;opacity:.6;margin-top:26px;line-height:1.6}
+.state{font-size:16px;opacity:.75;margin-top:30px;line-height:1.6}
 [hidden]{display:none}
 .ltr{direction:ltr;display:inline-block}
 </style>
@@ -156,7 +159,7 @@ const T = {
     loading:"لحظة، بنجيب النتائج…",
     waiting:"المباراة ما خلصت لسع. ارجع بعد صافرة النهاية ولقى النتائج هنا.",
     broken:"ما قدرنا نجيب النتائج هسي. حاول تاني بعد شوية.",
-    note:"أرقام الحسابات مخفية للخصوصية. الفائزين بيتم التأكد منهم قبل الإعلان.",
+    note:"أرقام الحسابات مخفية جزئياً. لفريق كاشي بس. الفائزين بيتم التأكد منهم قبل الإعلان.",
     perfect:"مضبوطة تماماً", exact:"النتيجة صح", near:"الفائز صح", no:"ما زبطها",
     off:n=>`${n} دقيقة فرق`,
     goalline:(m,who)=>`${m}د · ${who}`
@@ -172,7 +175,7 @@ const T = {
     loading:"Getting the results…",
     waiting:"The match isn't finished yet. Come back after the final whistle and the results will be here.",
     broken:"We couldn't load the results just now. Try again in a moment.",
-    note:"Account numbers are hidden for privacy. Winners are verified before we announce them.",
+    note:"Account numbers are part-hidden. Cashi team only. Winners are checked against live accounts before we announce them.",
     perfect:"Perfect call", exact:"Exact score", near:"Right winner", no:"Missed it",
     off:n=>`${n} min off`,
     goalline:(m,who)=>`${m}' · ${who}`

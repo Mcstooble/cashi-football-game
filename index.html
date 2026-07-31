@@ -3,61 +3,49 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>توقع النتيجة | كاشي</title>
-<meta name="description" content="توقع نتيجة مباراة الهلال أم درمان ورايون سبورت. حصري لمستخدمي كاشي.">
+<title>توقع النتيجة | فريق كاشي</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="لعبة توقّعات داخلية لفريق كاشي: الهلال أم درمان ورايون سبورت.">
 
 <style>
 /* ============================================================
-   CONFIG — Cashi brand
+   Cashi brand
    Cashi Purple #4E2D82 · Electric Purple #5F4BCF
    Cashi Yellow #FFAE00 · Ivory Dune #FFFCF5
-   Mahogany Market #201003 (text only)
+   Blue Nile #20C5D9 (the one secondary) · Mahogany #201003 (text only)
    ============================================================ */
 :root{
   --purple:#4E2D82;
   --purple-lit:#5F4BCF;
   --yellow:#FFAE00;
   --ivory:#FFFCF5;
-  --ivory-warm:#FFF7EB;
-  --nile:#20C5D9;          /* the one secondary colour on this asset */
+  --nile:#20C5D9;
   --ink:#201003;
-  --bg:#190A2E;            /* near-black purple ground */
+
+  --bg:var(--ivory);
+  --line:rgba(78,45,130,.16);
+  --wash:rgba(78,45,130,.05);
   --r:22px;
 
-  /* Heavy condensed display face. No webfonts allowed (external requests are
-     blocked), so this walks the system condensed faces on iOS, Android and
-     desktop before falling back to a heavy sans. Arabic has no condensed
-     system face, so it falls back per-glyph and relies on size instead. */
+  /* Heavy condensed display face. External fonts are blocked, so this walks
+     the system condensed faces before falling back to a heavy sans. Arabic
+     has no condensed system face and is handled separately below. */
   --display:"Haettenschweiler","Impact","Arial Narrow","Roboto Condensed",
             "Helvetica Neue Condensed Bold","Brother 1816",system-ui,sans-serif;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 html,body{height:100%}
 
 body{
-  /* Brother 1816 is the brand face but it is an Adobe Font and cannot be
-     loaded without an external request. This stack is the closest
-     geometric fallback available on Android and iOS. */
   font-family:"Brother 1816","Avenir Next","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   background:var(--bg);
-  color:#fff;
+  color:var(--ink);
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
 
-/* Layered diamonds from the Cashi graphic system, sitting behind everything */
-.field{
-  position:fixed;inset:0;z-index:0;overflow:hidden;
-  background:var(--bg);
-}
-.field i{
-  position:absolute;left:50%;top:38%;
-  border-radius:26%;
-  transform:translate(-50%,-50%) rotate(45deg);
-  border:1px solid #fff;
-}
+.field{position:fixed;inset:0;z-index:0;background:var(--bg)}
 .field i{display:none}
 
 .wrap{
@@ -70,13 +58,14 @@ body{
 
 /* ---------- top bar ---------- */
 .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
-.logo{font-family:var(--display);font-weight:900;font-size:26px;
-  letter-spacing:.03em;text-transform:uppercase}
+.logo{
+  font-family:var(--display);font-weight:900;font-size:26px;
+  letter-spacing:.03em;text-transform:uppercase;color:var(--purple);
+}
 .langtog{
-  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
-  color:#fff;font:inherit;font-weight:700;font-size:13px;
-  padding:8px 14px;border-radius:999px;cursor:pointer;
-  letter-spacing:.04em;
+  background:none;border:1.5px solid var(--line);
+  color:var(--purple);font:inherit;font-weight:700;font-size:13px;
+  padding:8px 14px;border-radius:999px;cursor:pointer;letter-spacing:.04em;
 }
 .langtog:active{transform:scale(.96)}
 
@@ -85,54 +74,40 @@ body{
 
 .kicker{
   font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--yellow);margin-bottom:18px;
+  color:var(--purple-lit);margin-bottom:18px;
 }
 
 h1{
   font-family:var(--display);
   font-size:clamp(58px,19vw,108px);
-  line-height:.82;
-  font-weight:900;
-  letter-spacing:-.015em;
-  text-transform:uppercase;
-  margin-bottom:20px;
-  text-wrap:balance;
+  line-height:.82;font-weight:900;letter-spacing:-.015em;
+  text-transform:uppercase;margin-bottom:20px;text-wrap:balance;
+  color:var(--purple);
 }
-h1 em{font-style:normal;color:var(--yellow)}
+h1 em{font-style:normal;color:var(--purple-lit)}
 html[lang="ar"] h1{
-  /* Arabic has no condensed system face and its glyphs need more height */
   font-family:"Brother 1816",system-ui,-apple-system,sans-serif;
-  font-size:clamp(44px,14vw,76px);
-  line-height:1.02;
-  letter-spacing:0;
+  font-size:clamp(44px,14vw,76px);line-height:1.02;letter-spacing:0;
 }
 
 .sub{
   font-size:clamp(16px,4.4vw,19px);line-height:1.45;
-  opacity:.88;font-weight:400;max-width:26em;
+  font-weight:500;max-width:26em;opacity:.75;
 }
 
 /* ---------- the scoreline ---------- */
-.tie{
-  display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:8px;
-  margin:32px 0 6px;
-}
+.tie{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:8px;margin:32px 0 6px}
 .side{display:flex;flex-direction:column;align-items:center;gap:12px}
 .team{
   font-size:13px;font-weight:800;line-height:1.25;text-align:center;
-  min-height:2.5em;display:flex;align-items:center;
-  letter-spacing:.02em;
+  min-height:2.5em;display:flex;align-items:center;letter-spacing:.02em;
 }
-.dash{
-  font-size:clamp(30px,9vw,44px);font-weight:800;opacity:.35;
-  align-self:center;padding-top:34px;
-}
+.dash{font-size:clamp(30px,9vw,44px);font-weight:800;opacity:.25;align-self:center;padding-top:34px}
 
 .num{
   width:100%;max-width:118px;
-  background:var(--ivory);color:var(--purple);
-  border-radius:var(--r);
-  padding:10px 0 12px;
+  background:var(--purple);color:#fff;
+  border-radius:var(--r);padding:10px 0 12px;
   display:flex;flex-direction:column;align-items:center;gap:2px;
 }
 .num output{
@@ -147,87 +122,73 @@ html[lang="ar"] h1{
   font:inherit;font-size:22px;font-weight:800;line-height:1;
   display:grid;place-items:center;
 }
-.steps button:disabled{opacity:.22;cursor:default}
+.steps button:disabled{opacity:.2;cursor:default}
 .steps button:active:not(:disabled){transform:scale(.9)}
 
 /* ---------- goal minute rows, grouped by team ---------- */
 .goals{display:flex;flex-direction:column;gap:20px;margin-top:8px}
 
-.grp{
-  border-radius:20px;overflow:hidden;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.16);
-}
-.grp[data-side="home"]{box-shadow:inset 4px 0 0 #fff}
-html[dir="rtl"] .grp[data-side="home"]{box-shadow:inset -4px 0 0 #fff}
+.grp{border-radius:20px;overflow:hidden;background:var(--wash);border:1px solid var(--line)}
+.grp[data-side="home"]{box-shadow:inset 4px 0 0 var(--purple)}
+html[dir="rtl"] .grp[data-side="home"]{box-shadow:inset -4px 0 0 var(--purple)}
 .grp[data-side="away"]{box-shadow:inset 4px 0 0 var(--nile)}
 html[dir="rtl"] .grp[data-side="away"]{box-shadow:inset -4px 0 0 var(--nile)}
 
 .grphead{
-  display:flex;align-items:center;gap:9px;
-  padding:14px 16px 12px;
-  font-size:15px;font-weight:800;letter-spacing:.01em;
-  border-bottom:1px solid rgba(255,255,255,.14);
+  display:flex;align-items:center;gap:9px;padding:14px 16px 12px;
+  font-size:15px;font-weight:800;letter-spacing:.01em;border-bottom:1px solid var(--line);
 }
 .grphead .dot{width:11px;height:11px;border-radius:3px;transform:rotate(45deg);flex-shrink:0}
-.grp[data-side="home"] .dot{background:#fff}
+.grp[data-side="home"] .dot{background:var(--purple)}
 .grp[data-side="away"] .dot{background:var(--nile)}
-.grphead .cnt{margin-inline-start:auto;font-size:13px;font-weight:600;opacity:.6}
+.grphead .cnt{margin-inline-start:auto;font-size:13px;font-weight:600;opacity:.55}
 
 .grp .rows{display:flex;flex-direction:column;padding:6px 8px 10px}
-
-.goal{
-  display:flex;align-items:center;gap:12px;
-  padding:9px 8px;
-}
-.goal + .goal{border-top:1px solid rgba(255,255,255,.09)}
+.goal{display:flex;align-items:center;gap:12px;padding:9px 8px}
+.goal + .goal{border-top:1px solid var(--line)}
 .goal .who{font-size:15px;font-weight:700;flex:1;line-height:1.3}
 .goal input{
   width:86px;flex-shrink:0;
-  background:var(--ivory);color:var(--purple);
-  border:0;border-radius:13px;
+  background:#fff;color:var(--purple);
+  border:1.5px solid var(--line);border-radius:13px;
   font:inherit;font-size:24px;font-weight:800;text-align:center;
-  padding:9px 6px;
-  font-variant-numeric:tabular-nums;
+  padding:9px 6px;font-variant-numeric:tabular-nums;
 }
-.goal input::placeholder{color:rgba(78,45,130,.32);font-weight:700}
-.goal .unit{font-size:13px;font-weight:700;opacity:.7;flex-shrink:0}
+.goal input::placeholder{color:rgba(78,45,130,.28);font-weight:700}
+.goal .unit{font-size:13px;font-weight:700;opacity:.6;flex-shrink:0}
 
 /* ---------- form fields ---------- */
 .field-lg{margin-top:22px}
-.field-lg label{display:block;font-size:14px;font-weight:700;margin-bottom:9px;opacity:.9}
-.field-lg input{
-  width:100%;
-  background:var(--ivory);color:var(--purple);
-  border:0;border-radius:18px;
-  font:inherit;font-size:26px;font-weight:800;
-  padding:17px 18px;
-  letter-spacing:.06em;
-  font-variant-numeric:tabular-nums;
+.field-lg label{
+  display:flex;align-items:baseline;gap:8px;
+  font-size:14px;font-weight:800;margin-bottom:9px;
 }
-.field-lg input::placeholder{color:rgba(78,45,130,.3);letter-spacing:.02em}
-.field-lg .hint{font-size:13px;opacity:.72;margin-top:9px;line-height:1.45}
-
-/* smaller variant for text fields, so they don't shout like the account number */
+.field-lg input{
+  width:100%;background:#fff;color:var(--purple);
+  border:1.5px solid var(--line);border-radius:18px;
+  font:inherit;font-size:26px;font-weight:800;
+  padding:17px 18px;letter-spacing:.06em;font-variant-numeric:tabular-nums;
+}
+.field-lg input::placeholder{color:rgba(78,45,130,.26);letter-spacing:.02em}
 .field-lg input.sm{font-size:19px;padding:15px 16px;letter-spacing:.01em}
+.field-lg input:focus-visible{outline:2px solid var(--purple-lit);outline-offset:1px;border-color:transparent}
+.field-lg .hint{font-size:13px;opacity:.65;margin-top:9px;line-height:1.45}
 
-.field-lg label{display:flex;align-items:baseline;gap:8px}
 .opt{
   font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-  background:rgba(255,255,255,.16);border-radius:999px;padding:3px 9px;
-  opacity:.85;
+  background:var(--wash);border:1px solid var(--line);
+  border-radius:999px;padding:3px 9px;opacity:.8;
 }
 
 .gate{
-  background:rgba(255,174,0,.14);border:1px solid rgba(255,174,0,.4);
+  background:rgba(255,174,0,.16);border:1.5px solid rgba(255,174,0,.55);
   border-radius:18px;padding:15px 16px;margin-top:20px;
   font-size:14px;line-height:1.5;
 }
-.gate b{color:var(--yellow)}
+.gate b{color:var(--purple);font-weight:800}
 
 /* ---------- actions ---------- */
 .acts{flex-shrink:0;padding-top:22px}
-
 .cta{
   display:block;width:100%;
   background:var(--yellow);color:var(--ink);
@@ -238,39 +199,28 @@ html[dir="rtl"] .grp[data-side="away"]{box-shadow:inset -4px 0 0 var(--nile)}
 }
 .cta:active:not(:disabled){transform:scale(.98)}
 .cta:disabled{opacity:.4;cursor:default}
-
 .back{
   display:block;width:100%;background:none;border:0;
-  color:#fff;font:inherit;font-size:15px;font-weight:600;
-  opacity:.7;padding:15px;margin-top:4px;cursor:pointer;
+  color:var(--purple);font:inherit;font-size:15px;font-weight:700;
+  opacity:.6;padding:15px;margin-top:4px;cursor:pointer;
 }
 
-.meta{
-  text-align:center;font-size:13px;opacity:.68;margin-top:14px;line-height:1.5;
-}
+.meta{text-align:center;font-size:13px;opacity:.6;margin-top:14px;line-height:1.5}
 .meta b{opacity:1;font-weight:700}
 
-/* countdown */
-.clock{
-  display:flex;align-items:center;justify-content:center;gap:9px;
-  margin-top:16px;font-size:14px;
-}
-.clock .lbl{opacity:.7;font-weight:600}
-.clock .t{
-  font-weight:800;font-variant-numeric:tabular-nums;
-  color:var(--yellow);letter-spacing:.02em;
-}
+.clock{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:16px;font-size:14px}
+.clock .lbl{opacity:.6;font-weight:600}
+.clock .t{font-weight:800;font-variant-numeric:tabular-nums;color:var(--purple-lit);letter-spacing:.02em}
 
-/* one-shot warning */
 .once{
-  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+  background:var(--wash);border:1px solid var(--line);
   border-radius:18px;padding:15px 16px;margin-top:18px;
   font-size:14px;line-height:1.5;
 }
 .once b{font-weight:800}
 
 .err{
-  background:rgba(255,255,255,.95);color:#B0202B;
+  background:#FDECEE;color:#A81D28;border:1px solid rgba(168,29,40,.25);
   border-radius:16px;padding:14px 16px;margin-top:16px;
   font-size:14px;font-weight:700;line-height:1.45;
 }
@@ -281,21 +231,24 @@ html[dir="rtl"] .grp[data-side="away"]{box-shadow:inset -4px 0 0 var(--nile)}
   background:var(--yellow);transform:rotate(45deg);
   display:grid;place-items:center;margin-bottom:26px;
 }
-.tick span{transform:rotate(-45deg);font-size:38px;line-height:1;color:var(--purple)}
+.tick span{transform:rotate(-45deg);font-size:38px;line-height:1;color:var(--ink)}
 
 .card{
-  background:var(--ivory);color:var(--purple);
+  background:var(--purple);color:#fff;
   border-radius:var(--r);padding:22px;margin-top:22px;
 }
-.card .big{font-size:clamp(38px,12vw,54px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
-.card .lbl{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.55;margin-bottom:8px}
+.card .big{
+  font-family:var(--display);
+  font-size:clamp(44px,14vw,64px);font-weight:900;line-height:.9;
+  font-variant-numeric:tabular-nums;
+}
+.card .lbl{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.6;margin-bottom:8px}
 .card .mins{font-size:16px;font-weight:700;margin-top:14px;line-height:1.5}
-.card hr{border:0;border-top:1px solid rgba(78,45,130,.15);margin:18px 0}
+.card hr{border:0;border-top:1px solid rgba(255,255,255,.2);margin:18px 0}
 
 /* ---------- screens ---------- */
 [data-screen]{display:none}
 [data-screen].on{display:flex;flex-direction:column;flex:1}
-
 .ltr{direction:ltr}
 html[dir="ltr"] .steps{direction:ltr}
 </style>
@@ -476,12 +429,12 @@ const T = {
     kicker2:"٢ من ٣",
     h2:"هسي<br>الجزء <em>الصعب</em>.",
     sub2:"اختار دقيقة المباراة البتظن كل هدف بيجي فيها. ما في ضغط.",
-    cta2:"ماشي",
+    cta2:"ثبّت توقّعاتي",
 
     kicker3:"٣ من ٣",
     h3:"منو <em>البيتوقّع</em>؟",
-    sub3:"تلاتة حاجات وبس: رقم حساب كاشي، رقم عملية دفع سويتها في آخر ٧ أيام، وحسابك في السوشيال لو عايز الشهرة.",
-    gate:"اللعبة دي <b>لمستخدمي كاشي بس</b>. ما عندك حساب؟ سجّل وارجع، بنستناك.",
+    sub3:"تلاتة حاجات وبس: رقم حساب كاشي، رقم عملية دفع سويتها في آخر ٧ أيام، وحسابك في السوشيال لو عايز تتشمخر.",
+    gate:"<b>لفريق كاشي بس.</b> اللعبة دي داخلية. لو ما بتشتغل معانا، انت في المكان الغلط.",
     acctlbl:"رقم حساب كاشي",
     accthint:"رقم الحساب البتستخدمه للدفع والاستلام.",
     reflbl:"رقم عملية دفع سويتها في آخر ٧ أيام",
@@ -490,12 +443,12 @@ const T = {
     socialph:"@حسابك",
     sociallbl:"حسابك في إنستغرام أو فيسبوك أو إكس",
     optional:"اختياري",
-    socialhint:"اكتب حسابك، ولو كسبت بنعلن اسمك <b>ملك التوقّعات</b> على العام. وإلا بنقول «واحد من الناس» وخلاص.",
+    socialhint:"اكتب حسابك، ولو كسبت بنعلن اسمك <b>ملك التوقّعات</b> قدام الفريق كلو. وإلا بنقول «واحد من الزملاء» وخلاص.",
     once:"<b>فرصة واحدة لكل رقم.</b> ما في تعديل، وما في «أنا قصدي ٢-١».",
     cta3:"ثبّتها",
 
     h4:"تمام.<br>انت <em>داخل</em>.",
-    sub4:"ثبّتناها. ما في رجعة هسي. بنعلن الفائزين بعد صافرة النهاية. خلي عينك على قنوات كاشي.",
+    sub4:"ثبّتناها. ما في رجعة هسي. بنعلن الفائزين بعد صافرة النهاية في قناة الفريق.",
     yourpick:"توقّعك",
     cta4:"خلي أصحابك يحاولوا",
 
@@ -535,12 +488,12 @@ const T = {
     kicker2:"2 of 3",
     h2:"Now<br>the <em>hard</em> part.",
     sub2:"Pick the minute of the game you think each goal will happen. No pressure.",
-    cta2:"Locked",
+    cta2:"Lock my picks",
 
     kicker3:"3 of 3",
     h3:"So who's<br><em>calling</em> it?",
-    sub3:"Three things: your Cashi Account Number, the reference from a payment you sent in the last 7 days, and a social handle if you want the glory.",
-    gate:"This one is <b>for Cashi users only</b>. No account? Sort that out and come back, we'll wait.",
+    sub3:"Three things: your Cashi Account Number, the reference from a payment you sent in the last 7 days, and your handle if you want the bragging rights.",
+    gate:"<b>Cashi team only.</b> This one stays inside the building. If you don't work here, you're in the wrong place.",
     acctlbl:"Cashi Account Number",
     accthint:"The account number you use to make and receive payments.",
     reflbl:"Reference from a payment you sent in the last 7 days",
@@ -549,12 +502,12 @@ const T = {
     socialph:"@yourhandle",
     sociallbl:"Instagram, Facebook or X handle",
     optional:"Optional",
-    socialhint:"Drop your handle. Win with it in here and we crown you <b>King of the Predictors</b> in public. Leave it blank and we'll just say \"someone\".",
+    socialhint:"Drop your handle. Win with it in here and we crown you <b>King of the Predictors</b> in front of the whole team. Leave it blank and we'll just say \"someone in ops\".",
     once:"<b>One entry per number.</b> No edits, no takebacks, no \"I meant 2-1\".",
     cta3:"Lock it in",
 
     h4:"That's<br><em>locked</em>.",
-    sub4:"No changing your mind now. We name the winners after the final whistle. Watch Cashi's channels.",
+    sub4:"No changing your mind now. We name the winners after the final whistle, on the team channel.",
     yourpick:"Your call",
     cta4:"Make your friends guess",
 
