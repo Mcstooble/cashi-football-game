@@ -21,7 +21,15 @@
   --ivory-warm:#FFF7EB;
   --nile:#20C5D9;          /* the one secondary colour on this asset */
   --ink:#201003;
+  --bg:#190A2E;            /* near-black purple ground */
   --r:22px;
+
+  /* Heavy condensed display face. No webfonts allowed (external requests are
+     blocked), so this walks the system condensed faces on iOS, Android and
+     desktop before falling back to a heavy sans. Arabic has no condensed
+     system face, so it falls back per-glyph and relies on size instead. */
+  --display:"Haettenschweiler","Impact","Arial Narrow","Roboto Condensed",
+            "Helvetica Neue Condensed Bold","Brother 1816",system-ui,sans-serif;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -33,7 +41,7 @@ body{
      loaded without an external request. This stack is the closest
      geometric fallback available on Android and iOS. */
   font-family:"Brother 1816","Avenir Next","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
-  background:var(--purple);
+  background:var(--bg);
   color:#fff;
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
@@ -42,7 +50,7 @@ body{
 /* Layered diamonds from the Cashi graphic system, sitting behind everything */
 .field{
   position:fixed;inset:0;z-index:0;overflow:hidden;
-  background:linear-gradient(160deg,var(--purple) 0%,var(--purple-lit) 100%);
+  background:var(--bg);
 }
 .field i{
   position:absolute;left:50%;top:38%;
@@ -50,11 +58,7 @@ body{
   transform:translate(-50%,-50%) rotate(45deg);
   border:1px solid #fff;
 }
-.field i:nth-child(1){width:52vmax;height:52vmax;opacity:.13}
-.field i:nth-child(2){width:66vmax;height:66vmax;opacity:.10}
-.field i:nth-child(3){width:83vmax;height:83vmax;opacity:.07}
-.field i:nth-child(4){width:104vmax;height:104vmax;opacity:.05}
-.field i:nth-child(5){width:130vmax;height:130vmax;opacity:.03}
+.field i{display:none}
 
 .wrap{
   position:relative;z-index:1;
@@ -66,7 +70,8 @@ body{
 
 /* ---------- top bar ---------- */
 .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
-.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;letter-spacing:.01em}
+.logo{font-family:var(--display);font-weight:900;font-size:26px;
+  letter-spacing:.03em;text-transform:uppercase}
 .langtog{
   background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
   color:#fff;font:inherit;font-weight:700;font-size:13px;
@@ -80,15 +85,27 @@ body{
 
 .kicker{
   font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--yellow);margin-bottom:16px;
+  color:var(--yellow);margin-bottom:18px;
 }
 
 h1{
-  font-size:clamp(40px,13vw,68px);
-  line-height:.95;font-weight:800;letter-spacing:-.02em;
-  margin-bottom:14px;
+  font-family:var(--display);
+  font-size:clamp(58px,19vw,108px);
+  line-height:.82;
+  font-weight:900;
+  letter-spacing:-.015em;
+  text-transform:uppercase;
+  margin-bottom:20px;
+  text-wrap:balance;
 }
 h1 em{font-style:normal;color:var(--yellow)}
+html[lang="ar"] h1{
+  /* Arabic has no condensed system face and its glyphs need more height */
+  font-family:"Brother 1816",system-ui,-apple-system,sans-serif;
+  font-size:clamp(44px,14vw,76px);
+  line-height:1.02;
+  letter-spacing:0;
+}
 
 .sub{
   font-size:clamp(16px,4.4vw,19px);line-height:1.45;
@@ -117,10 +134,10 @@ h1 em{font-style:normal;color:var(--yellow)}
   border-radius:var(--r);
   padding:10px 0 12px;
   display:flex;flex-direction:column;align-items:center;gap:2px;
-  box-shadow:0 10px 0 rgba(0,0,0,.16);
 }
 .num output{
-  font-size:clamp(46px,15vw,66px);font-weight:800;line-height:1;
+  font-family:var(--display);
+  font-size:clamp(56px,18vw,80px);font-weight:900;line-height:.9;
   font-variant-numeric:tabular-nums;
 }
 .steps{display:flex;gap:8px;margin-top:6px}
@@ -215,12 +232,12 @@ html[dir="rtl"] .grp[data-side="away"]{box-shadow:inset -4px 0 0 var(--nile)}
   display:block;width:100%;
   background:var(--yellow);color:var(--ink);
   border:0;border-radius:999px;
-  font:inherit;font-size:20px;font-weight:800;letter-spacing:.01em;
+  font-family:var(--display);font-size:26px;font-weight:900;
+  letter-spacing:.02em;text-transform:uppercase;
   padding:20px;cursor:pointer;
-  box-shadow:0 8px 0 rgba(0,0,0,.2);
 }
-.cta:active:not(:disabled){transform:translateY(4px);box-shadow:0 4px 0 rgba(0,0,0,.2)}
-.cta:disabled{opacity:.4;cursor:default;box-shadow:0 8px 0 rgba(0,0,0,.1)}
+.cta:active:not(:disabled){transform:scale(.98)}
+.cta:disabled{opacity:.4;cursor:default}
 
 .back{
   display:block;width:100%;background:none;border:0;
@@ -269,7 +286,6 @@ html[dir="rtl"] .grp[data-side="away"]{box-shadow:inset -4px 0 0 var(--nile)}
 .card{
   background:var(--ivory);color:var(--purple);
   border-radius:var(--r);padding:22px;margin-top:22px;
-  box-shadow:0 10px 0 rgba(0,0,0,.16);
 }
 .card .big{font-size:clamp(38px,12vw,54px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
 .card .lbl{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.55;margin-bottom:8px}
